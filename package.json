@@ -1,0 +1,13 @@
+{
+  "name": "node-googleapis",
+  "version": "0.0.1",
+  "description": "wrapper of googleapis node client",
+  "main": "index.js",
+  "author": "hoony <the6thm0nth@outlook.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "esm": "^3.2.25",
+    "googleapis": "^43.0.0"
+  }
+}
