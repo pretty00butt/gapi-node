@@ -9,5 +9,11 @@
   "dependencies": {
     "esm": "^3.2.25",
     "googleapis": "^43.0.0"
+  },
+  "scripts": {
+    "test": "mocha --require esm"
+  },
+  "devDependencies": {
+    "mocha": "^6.2.1"
   }
 }

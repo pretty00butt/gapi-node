@@ -1,7 +1,7 @@
 import fs from "fs";
-import { authorize, getNewToken } from "./_auth";
-import appScriptApis from "./_appscript";
-import messageApis from "./_messages";
+import { authorize } from "./_auth";
+
+import lib from "./lib";
 
 const APP_TYPE_APP_SCRIPT = "appscript";
 const APP_TYPE_MESSAGES = "messages";
@@ -14,18 +14,11 @@ class GoogleApp {
     [APP_TYPE_SHEETS]: null
   };
 
+
   _labels;
 
   get appTypes() {
     return [APP_TYPE_APP_SCRIPT, APP_TYPE_MESSAGES, APP_TYPE_SHEETS];
-  }
-
-  _auth(credentialPath, tokenPath, { SCOPES }) {
-    const content = fs.readFileSync(credentialPath);
-    return authorize(JSON.parse(content), {
-      scope: SCOPES,
-      tokenPath
-    });
   }
 
   async auth(type, credential, token, { SCOPES = [] }) {
