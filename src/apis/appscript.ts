@@ -1,15 +1,12 @@
-import fs from "fs";
 import { google } from "googleapis";
 
-import _auth from "./_auth"
-
-function auth(credentialPath, {
-  scope, tokenPath
-}) {
-  return _auth(credentialPath, { scope, tokenPath })
+interface runOptions {
+  scriptId: string;
+  functionName: string;
+  parameters: any[];
 }
 
-function run(auth, { scriptId, functionName, parameters = [] } = {}) {
+function run(auth: any, { scriptId, functionName, parameters = [] }: runOptions) {
   const script = google.script({ version: "v1", auth });
   return script.scripts.run({
     scriptId,

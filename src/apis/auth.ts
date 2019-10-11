@@ -8,8 +8,9 @@ import { google } from "googleapis";
  * @param {Object} credentials The authorization client credentials.
  * @param {function} callback The callback to call with the authorized client.
  */
-export function authorize(credentials, { scope, tokenPath }) {
-  const { client_secret, client_id, redirect_uris } = credentials.installed;
+export function authorize(credentialPath: string, { scope, tokenPath }: { scope: string[], tokenPath: string }) {
+  const credentials: any = fs.readFileSync(credentialPath);
+  const { client_secret, client_id, redirect_uris } = JSON.parse(credentials).installed;
   const oAuth2Client = new google.auth.OAuth2(
     client_id,
     client_secret,
@@ -17,7 +18,7 @@ export function authorize(credentials, { scope, tokenPath }) {
   );
 
   return new Promise((resolve, reject) => {
-    fs.readFile(tokenPath, (err, token) => {
+    fs.readFile(tokenPath, (err: Error, token: string | Buffer) => {
       if (err) {
         resolve(
           getNewToken(oAuth2Client, {
@@ -26,7 +27,7 @@ export function authorize(credentials, { scope, tokenPath }) {
           })
         );
       } else {
-        oAuth2Client.setCredentials(JSON.parse(token));
+        oAuth2Client.setCredentials(JSON.parse(token as string));
         resolve(oAuth2Client);
       }
     });
@@ -39,7 +40,7 @@ export function authorize(credentials, { scope, tokenPath }) {
  * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
  * @param {getEventsCallback} callback The callback for the authorized client.
  */
-function getNewToken(oAuth2Client, { scope, tokenPath }) {
+function getNewToken(oAuth2Client: any, { scope, tokenPath }: { scope: string[], tokenPath: string }) {
   const authUrl = oAuth2Client.generateAuthUrl({
     access_type: "offline",
     scope
@@ -53,7 +54,7 @@ function getNewToken(oAuth2Client, { scope, tokenPath }) {
   return new Promise((resolve, reject) => {
     rl.question("Enter the code from that page here: ", code => {
       rl.close();
-      oAuth2Client.getToken(code, (err, token) => {
+      oAuth2Client.getToken(code, (err: Error, token: Object) => {
         if (err) reject(err);
         else {
           oAuth2Client.setCredentials(token);

@@ -1,6 +1,6 @@
 import fs from "fs";
 import { authorize } from "./_auth";
-import lib from "./lib";
+import lib from "./src/apis";
 
 const APP_TYPE_APP_SCRIPT = "appscript";
 const APP_TYPE_MESSAGES = "messages";
