@@ -1,13 +1,18 @@
-import apis from "./apis"
+import apis from "./apis";
+
+type Label = {
+  id: string;
+  name: string;
+};
 
 interface Tokens {
-  [k: string]: any
+  [k: string]: any;
 }
 
 interface AuthOptions {
   credentialPath: string;
   scope: string[];
-  tokenPath?: string;
+  tokenPath: string;
 }
 
 class GoogleApi {
@@ -21,20 +26,19 @@ class GoogleApi {
     throw new Error("Need to authorize");
   }
 
-  public async auth(app: string, {
-    credentialPath,
-    scope,
-    tokenPath
-  }: AuthOptions) {
+  public async auth(
+    app: string,
+    { credentialPath, scope, tokenPath }: AuthOptions
+  ) {
     console.log(`🔑🔑🔑 trying to authorize 👉🏼 ${app}\n`);
     this.tokens[app] = await apis.auth.authorize(credentialPath, {
       scope,
       tokenPath
-    })
+    });
   }
 
   public isAuthorized(app: string) {
-    return !!this.tokens[app]
+    return !!this.tokens[app];
   }
 
   public getMessageById(app: string, id: string) {
@@ -42,24 +46,59 @@ class GoogleApi {
     return apis.messages.getById(auth, { id });
   }
 
-  public getMessages(app: string, queryOptions: {
-    q?: string,
-    pageToken?: string,
-  } | undefined) {
+  public getMessages(
+    app: string,
+    queryOptions: {
+      q: string;
+      pageToken?: string;
+    }
+  ) {
     this.checkAuth(app);
-    return apis.messages.fetchMessages(this.tokens[app], queryOptions)
+    return apis.messages.fetchMessages(this.tokens[app], queryOptions);
   }
 
-  public async getLabelByName(app: string, name: string) {
+  public async getLabelByName(
+    app: string,
+    name: string
+  ): Promise<Label | undefined> {
     const auth = this.checkAuth(app);
     const labels = await apis.messages.fetchLabels(auth);
-    return labels.find(label => label.name === name).id;
+
+    if (!labels) {
+      return undefined;
+    }
+
+    return labels.find(label => label.name === name);
   }
 
-  public async getLabelById(app: string, id: string) {
+  public async getLabelById(
+    app: string,
+    id: string
+  ): Promise<Label | undefined> {
     const auth = this.checkAuth(app);
     const labels = await apis.messages.fetchLabels(auth);
-    return labels.find(label => label.id === id)
+    if (!labels) {
+      return undefined;
+    }
+    return labels.find(label => label.id === id);
+  }
+
+  public runAppScript(
+    app: string,
+    scriptId: string,
+    functionName: string,
+    {
+      parameters
+    }: {
+      parameters: any[];
+    }
+  ) {
+    const auth = this.checkAuth(app);
+    return apis.appscript.run(auth, {
+      scriptId,
+      functionName,
+      parameters
+    });
   }
 }
 

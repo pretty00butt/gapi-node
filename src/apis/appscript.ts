@@ -6,7 +6,10 @@ interface runOptions {
   parameters: any[];
 }
 
-function run(auth: any, { scriptId, functionName, parameters = [] }: runOptions) {
+export function run(
+  auth: any,
+  { scriptId, functionName, parameters = [] }: runOptions
+) {
   const script = google.script({ version: "v1", auth });
   return script.scripts.run({
     scriptId,
@@ -16,7 +19,3 @@ function run(auth: any, { scriptId, functionName, parameters = [] }: runOptions)
     }
   });
 }
-
-export default {
-  run
-};

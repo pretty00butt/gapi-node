@@ -2,7 +2,7 @@
   "name": "node-googleapis",
   "version": "0.0.1",
   "description": "wrapper of googleapis node client",
-  "main": "index.js",
+  "main": "dist/index.js",
   "author": "hoony <the6thm0nth@outlook.com>",
   "license": "MIT",
   "private": false,
@@ -13,6 +13,7 @@
   },
   "scripts": {
     "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' index.ts",
+    "build": "tsc",
     "run-example": "ts-node example.ts",
     "test": "mocha"
   },
