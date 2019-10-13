@@ -10,9 +10,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const appscript = __importStar(require("./appscript"));
 const auth = __importStar(require("./auth"));
 const messages = __importStar(require("./messages"));
+const sheets = __importStar(require("./sheets"));
+const threads = __importStar(require("./threads"));
 exports.default = {
     appscript,
     auth,
     messages,
+    sheets,
+    threads
 };
 //# sourceMappingURL=index.js.map

@@ -23,6 +23,10 @@ class GoogleApi {
         }
         throw new Error("Need to authorize");
     }
+    appendToSheet(app, { spreadsheetId, values }) {
+        const auth = this.checkAuth(app);
+        return apis_1.default.sheets.append(auth, spreadsheetId, values);
+    }
     auth(app, { credentialPath, scope, tokenPath }) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log(`🔑🔑🔑 trying to authorize 👉🏼 ${app}\n`);
@@ -61,6 +65,12 @@ class GoogleApi {
                 return undefined;
             }
             return labels.find(label => label.id === id);
+        });
+    }
+    getThread(app, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const auth = this.checkAuth(app);
+            return apis_1.default.threads.getThreadById(auth, id);
         });
     }
     runAppScript(app, scriptId, functionName, { parameters }) {

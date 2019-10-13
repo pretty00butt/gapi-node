@@ -26,6 +26,20 @@ class GoogleApi {
     throw new Error("Need to authorize");
   }
 
+  public appendToSheet(
+    app: string,
+    {
+      spreadsheetId,
+      values
+    }: {
+      spreadsheetId: string;
+      values: any;
+    }
+  ) {
+    const auth = this.checkAuth(app);
+    return apis.sheets.append(auth, spreadsheetId, values);
+  }
+
   public async auth(
     app: string,
     { credentialPath, scope, tokenPath }: AuthOptions
@@ -81,6 +95,11 @@ class GoogleApi {
       return undefined;
     }
     return labels.find(label => label.id === id);
+  }
+
+  public async getThread(app: string, id: string) {
+    const auth = this.checkAuth(app);
+    return apis.threads.getThreadById(auth, id);
   }
 
   public runAppScript(
