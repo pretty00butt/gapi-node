@@ -5,10 +5,6 @@ type Label = {
   name: string;
 };
 
-interface Tokens {
-  [k: string]: any;
-}
-
 interface AuthOptions {
   credentialPath: string;
   scope: string[];
@@ -16,11 +12,11 @@ interface AuthOptions {
 }
 
 class GoogleApi {
-  private tokens: Tokens = {};
+  private token: any;
 
-  private checkAuth(app: string) {
-    if (this.tokens[app]) {
-      return this.tokens[app];
+  private checkAuth() {
+    if (this.token) {
+      return this.token;
     }
 
     throw new Error("Need to authorize");
@@ -36,46 +32,43 @@ class GoogleApi {
       values: any;
     }
   ) {
-    const auth = this.checkAuth(app);
+    const auth = this.checkAuth();
     return apis.sheets.append(auth, spreadsheetId, values);
   }
 
   public async auth(
-    app: string,
     { credentialPath, scope, tokenPath }: AuthOptions
   ) {
-    console.log(`🔑🔑🔑 trying to authorize 👉🏼 ${app}\n`);
-    this.tokens[app] = await apis.auth.authorize(credentialPath, {
+    console.log(`🔑🔑🔑 trying to authorize 👉🏼 \n`);
+    this.token = await apis.auth.authorize(credentialPath, {
       scope,
       tokenPath
     });
   }
 
-  public isAuthorized(app: string) {
-    return !!this.tokens[app];
+  public isAuthorized() {
+    return !!this.token;
   }
 
-  public getMessageById(app: string, id: string) {
-    const auth = this.checkAuth(app);
+  public getMessageById(id: string) {
+    const auth = this.checkAuth();
     return apis.messages.getById(auth, { id });
   }
 
   public getMessages(
-    app: string,
     queryOptions: {
       q: string;
       pageToken?: string;
     }
   ) {
-    this.checkAuth(app);
-    return apis.messages.fetchMessages(this.tokens[app], queryOptions);
+    const auth = this.checkAuth();
+    return apis.messages.fetchMessages(auth, queryOptions);
   }
 
   public async getLabelByName(
-    app: string,
     name: string
   ): Promise<Label | undefined> {
-    const auth = this.checkAuth(app);
+    const auth = this.checkAuth();
     const labels = await apis.messages.fetchLabels(auth);
 
     if (!labels) {
@@ -86,10 +79,9 @@ class GoogleApi {
   }
 
   public async getLabelById(
-    app: string,
     id: string
   ): Promise<Label | undefined> {
-    const auth = this.checkAuth(app);
+    const auth = this.checkAuth();
     const labels = await apis.messages.fetchLabels(auth);
     if (!labels) {
       return undefined;
@@ -97,13 +89,12 @@ class GoogleApi {
     return labels.find(label => label.id === id);
   }
 
-  public async getThread(app: string, id: string) {
-    const auth = this.checkAuth(app);
+  public async getThread(id: string) {
+    const auth = this.checkAuth();
     return apis.threads.getThreadById(auth, id);
   }
 
   public runAppScript(
-    app: string,
     scriptId: string,
     functionName: string,
     {
@@ -112,7 +103,7 @@ class GoogleApi {
       parameters: any[];
     }
   ) {
-    const auth = this.checkAuth(app);
+    const auth = this.checkAuth();
     return apis.appscript.run(auth, {
       scriptId,
       functionName,

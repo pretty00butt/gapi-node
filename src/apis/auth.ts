@@ -8,7 +8,7 @@ import { google } from "googleapis";
  * @param {Object} credentials The authorization client credentials.
  * @param {function} callback The callback to call with the authorized client.
  */
-export function authorize(credentialPath: string, { scope, tokenPath }: { scope: string[], tokenPath: string }) {
+export function authorize(credentialPath: string, { scope, tokenPath }: { scope: string[], tokenPath: string }): Promise<any> {
   const credentials: any = fs.readFileSync(credentialPath);
   const { client_secret, client_id, redirect_uris } = JSON.parse(credentials).installed;
   const oAuth2Client = new google.auth.OAuth2(
@@ -17,7 +17,7 @@ export function authorize(credentialPath: string, { scope, tokenPath }: { scope:
     redirect_uris[0]
   );
 
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     fs.readFile(tokenPath, (err: Error, token: string | Buffer) => {
       if (err) {
         resolve(
