@@ -20,7 +20,7 @@ class GoogleApi {
         }
         throw new Error("Need to authorize");
     }
-    appendToSheet(app, { spreadsheetId, values }) {
+    appendToSheet({ spreadsheetId, values }) {
         const auth = this.checkAuth();
         return apis_1.default.sheets.append(auth, spreadsheetId, values);
     }

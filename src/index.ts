@@ -23,7 +23,6 @@ class GoogleApi {
   }
 
   public appendToSheet(
-    app: string,
     {
       spreadsheetId,
       values
