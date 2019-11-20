@@ -1,7 +1,7 @@
 {
-  "name": "node-googleapis",
+  "name": "node-google-apis",
   "version": "0.0.1",
-  "description": "wrapper of googleapis node client",
+  "description": "Google Apis Node Client",
   "main": "dist/index.js",
   "author": "hoony <the6thm0nth@outlook.com>",
   "license": "MIT",
