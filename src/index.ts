@@ -89,6 +89,13 @@ class GoogleApi {
     return labels.find(label => label.id === id);
   }
 
+  public async getLabels(
+    id: string
+  ): Promise<Label[] | null | undefined> {
+    const auth = this.checkAuth();
+    return await apis.messages.fetchLabels(auth);
+  }
+
   public async getThread(id: string) {
     const auth = this.checkAuth();
     return apis.threads.getThreadById(auth, id);

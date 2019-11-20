@@ -64,6 +64,12 @@ class GoogleApi {
             return labels.find(label => label.id === id);
         });
     }
+    getLabels(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const auth = this.checkAuth();
+            return yield apis_1.default.messages.fetchLabels(auth);
+        });
+    }
     getThread(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const auth = this.checkAuth();
