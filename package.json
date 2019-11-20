@@ -1,5 +1,5 @@
 {
-  "name": "node-google-apis",
+  "name": "gapi-node",
   "version": "0.0.1",
   "description": "Google Apis Node Client",
   "main": "dist/index.js",
