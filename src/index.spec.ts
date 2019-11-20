@@ -2,8 +2,8 @@ import { equal } from "assert";
 import path from "path";
 import GoogleApi from "./index";
 
-const MESSAGE_CREDENTIAL_PATH = path.resolve(__dirname, '..', '.credentials', 'guinness-premium.json')
-const MESSAGE_TOKEN_PATH = path.resolve(__dirname, '..', '.credentials', 'guinness-premium-token.json')
+const MESSAGE_CREDENTIAL_PATH = path.resolve(__dirname, '..', '.credentials', 'wp.json')
+const MESSAGE_TOKEN_PATH = path.resolve(__dirname, '..', '.credentials', 'wp-token.json')
 
 const SCOPE = [
   // mail
@@ -19,15 +19,14 @@ const SCOPE = [
 
 describe("GoogleApi", () => {
   it("authorize for sample app - guinness", async () => {
-    const appName = 'guinness-premium';
     await GoogleApi.auth(
-      appName, {
+      {
         credentialPath: MESSAGE_CREDENTIAL_PATH,
         scope: SCOPE,
         tokenPath: MESSAGE_TOKEN_PATH,
       }
     )
 
-    equal(GoogleApi.isAuthorized(appName), true);
+    equal(GoogleApi.isAuthorized(), true);
   })
 })

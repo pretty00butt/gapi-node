@@ -16,7 +16,7 @@ function authorize(credentialPath, { scope, tokenPath }) {
     const credentials = fs_1.default.readFileSync(credentialPath);
     const { client_secret, client_id, redirect_uris } = JSON.parse(credentials).installed;
     const oAuth2Client = new googleapis_1.google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
         fs_1.default.readFile(tokenPath, (err, token) => {
             if (err) {
                 resolve(getNewToken(oAuth2Client, {

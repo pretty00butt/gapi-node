@@ -16,7 +16,7 @@ main();
 
 async function main() {
   const app = "wp";
-  await GoogleApi.auth(app, {
+  await GoogleApi.auth({
     credentialPath: CREDENTIAL_PATH,
     tokenPath: TOKEN_PATH,
     scope: SCOPE
@@ -24,20 +24,18 @@ async function main() {
 
   const testLabelName = "CS테스트";
   const testQuery = "in:sent after:2019/10/11 before:2019/10/12";
-  await testLabel(app, testLabelName);
-  await testMessages(app, testQuery);
+  await testLabel(testLabelName);
+  await testMessages(testQuery);
 
-  async function testLabel(app, labelName) {
+  async function testLabel(labelName) {
     console.log(`👉🏼 GET Label ID by Label ${labelName}`);
-    const id = await GoogleApi.getLabelByName(app, labelName);
+    const id = await GoogleApi.getLabelByName(labelName);
     console.log(id);
   }
 
-  async function testMessages(app, q) {
+  async function testMessages(q) {
     console.log(`👉🏼 GET Messages with query: ${q}`);
-    const messages = await GoogleApi.getMessages(app, {
-      q
-    });
+    const messages = await GoogleApi.getMessages({ q });
     console.log(messages);
   }
 }

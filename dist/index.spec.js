@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = require("assert");
 const path_1 = __importDefault(require("path"));
 const index_1 = __importDefault(require("./index"));
-const MESSAGE_CREDENTIAL_PATH = path_1.default.resolve(__dirname, '..', '.credentials', 'guinness-premium.json');
-const MESSAGE_TOKEN_PATH = path_1.default.resolve(__dirname, '..', '.credentials', 'guinness-premium-token.json');
+const MESSAGE_CREDENTIAL_PATH = path_1.default.resolve(__dirname, '..', '.credentials', 'wp.json');
+const MESSAGE_TOKEN_PATH = path_1.default.resolve(__dirname, '..', '.credentials', 'wp-token.json');
 const SCOPE = [
     // mail
     "https://mail.google.com/",
@@ -30,13 +30,12 @@ const SCOPE = [
 ];
 describe("GoogleApi", () => {
     it("authorize for sample app - guinness", () => __awaiter(void 0, void 0, void 0, function* () {
-        const appName = 'guinness-premium';
-        yield index_1.default.auth(appName, {
+        yield index_1.default.auth({
             credentialPath: MESSAGE_CREDENTIAL_PATH,
             scope: SCOPE,
             tokenPath: MESSAGE_TOKEN_PATH,
         });
-        assert_1.equal(index_1.default.isAuthorized(appName), true);
+        assert_1.equal(index_1.default.isAuthorized(), true);
     }));
 });
 //# sourceMappingURL=index.spec.js.map

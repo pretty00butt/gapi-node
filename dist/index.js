@@ -14,42 +14,39 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const apis_1 = __importDefault(require("./apis"));
 class GoogleApi {
-    constructor() {
-        this.tokens = {};
-    }
-    checkAuth(app) {
-        if (this.tokens[app]) {
-            return this.tokens[app];
+    checkAuth() {
+        if (this.token) {
+            return this.token;
         }
         throw new Error("Need to authorize");
     }
     appendToSheet(app, { spreadsheetId, values }) {
-        const auth = this.checkAuth(app);
+        const auth = this.checkAuth();
         return apis_1.default.sheets.append(auth, spreadsheetId, values);
     }
-    auth(app, { credentialPath, scope, tokenPath }) {
+    auth({ credentialPath, scope, tokenPath }) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(`🔑🔑🔑 trying to authorize 👉🏼 ${app}\n`);
-            this.tokens[app] = yield apis_1.default.auth.authorize(credentialPath, {
+            console.log(`🔑🔑🔑 trying to authorize 👉🏼 \n`);
+            this.token = yield apis_1.default.auth.authorize(credentialPath, {
                 scope,
                 tokenPath
             });
         });
     }
-    isAuthorized(app) {
-        return !!this.tokens[app];
+    isAuthorized() {
+        return !!this.token;
     }
-    getMessageById(app, id) {
-        const auth = this.checkAuth(app);
+    getMessageById(id) {
+        const auth = this.checkAuth();
         return apis_1.default.messages.getById(auth, { id });
     }
-    getMessages(app, queryOptions) {
-        this.checkAuth(app);
-        return apis_1.default.messages.fetchMessages(this.tokens[app], queryOptions);
+    getMessages(queryOptions) {
+        const auth = this.checkAuth();
+        return apis_1.default.messages.fetchMessages(auth, queryOptions);
     }
-    getLabelByName(app, name) {
+    getLabelByName(name) {
         return __awaiter(this, void 0, void 0, function* () {
-            const auth = this.checkAuth(app);
+            const auth = this.checkAuth();
             const labels = yield apis_1.default.messages.fetchLabels(auth);
             if (!labels) {
                 return undefined;
@@ -57,9 +54,9 @@ class GoogleApi {
             return labels.find(label => label.name === name);
         });
     }
-    getLabelById(app, id) {
+    getLabelById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const auth = this.checkAuth(app);
+            const auth = this.checkAuth();
             const labels = yield apis_1.default.messages.fetchLabels(auth);
             if (!labels) {
                 return undefined;
@@ -67,14 +64,14 @@ class GoogleApi {
             return labels.find(label => label.id === id);
         });
     }
-    getThread(app, id) {
+    getThread(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const auth = this.checkAuth(app);
+            const auth = this.checkAuth();
             return apis_1.default.threads.getThreadById(auth, id);
         });
     }
-    runAppScript(app, scriptId, functionName, { parameters }) {
-        const auth = this.checkAuth(app);
+    runAppScript(scriptId, functionName, { parameters }) {
+        const auth = this.checkAuth();
         return apis_1.default.appscript.run(auth, {
             scriptId,
             functionName,
